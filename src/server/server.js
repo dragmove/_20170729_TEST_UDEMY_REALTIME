@@ -52,7 +52,7 @@ if (process.env.USE_WEBPACK === "true") {
 
 // ------------------------
 // Configure Express
-app.set("view engine", "jade");
+app.set("view engine", "pug");
 app.use(express.static("public"));
 
 const useExternalStyles = !isDevelopment;
@@ -78,7 +78,13 @@ const modules = [users, chat, playlist];
 // Socket
 io.on("connection", socket => {
 	console.log(`Got connection from ${socket.request.connection.remoteAddress}`);
-	
+
+	let index = 0;
+	setInterval(() => {
+		socket.emit('test', `On Index ${index}`);
+	}, 1000);
+
+	/*
 	const client = new ObservableSocket(socket);
 	
 	for (let mod of modules)
@@ -86,6 +92,7 @@ io.on("connection", socket => {
 		
 	for (let mod of modules)
 		mod.clientRegistered(client);
+		*/
 });
 
 // ------------------------
