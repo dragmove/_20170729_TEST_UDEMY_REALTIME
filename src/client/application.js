@@ -3,14 +3,16 @@ import './application.scss';
 import * as services from './services';
 
 // playground
-services.server.on$('test')
-  .map(data => data + ' whoa')
-  .subscribe(item => {
-    console.log(`Got ${item} from server!`);
+services.server
+  .emitAction$('login', {username: 'foo', password: 'bar'})
+  .subscribe(result => {
+    if (result.error) {
+      console.error(result.error);
+
+    } else {
+      console.log('We are logged in');
+    }
   });
-
-services.server.status$.subscribe(state => console.log(state));
-
 // auth
 
 // components

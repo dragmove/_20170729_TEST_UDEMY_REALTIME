@@ -79,11 +79,23 @@ const modules = [users, chat, playlist];
 io.on("connection", socket => {
 	console.log(`Got connection from ${socket.request.connection.remoteAddress}`);
 
-	let index = 0;
-	setInterval(() => {
-		socket.emit('test', `On Index ${index}`);
-	}, 1000);
+	const client = new ObservableSocket(socket);
 
+	client.onAction('login', creds => {
+		return Observable.of({username: creds.username});
+
+		/*
+		return database
+			.find('user', {username: creds.username})
+			.flatMap(user => {
+				if(!user || user.password != creds.password) {
+					return Observable.throw('User not found');
+				}
+
+				return Observable.of(user);
+			});
+			*/
+	});
 	/*
 	const client = new ObservableSocket(socket);
 	
